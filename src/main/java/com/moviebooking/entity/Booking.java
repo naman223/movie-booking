@@ -1,6 +1,5 @@
 package com.moviebooking.entity;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -16,18 +15,17 @@ public class Booking {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private Integer id;
     private int showId;
 
-    @ElementCollection
-    @CollectionTable(name="seats", joinColumns=@JoinColumn(name="id"))
-    @Column(name="seats")
-    private List<Integer> seats;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "booking_id")
+    private List<Seat> seats;
     private String userId;
     private BookingStatus bookingStatus;
 
     public Booking(@NonNull int showId, @NonNull String userId,
-                   @NonNull List<Integer> seats) {
+                   @NonNull List<Seat> seats) {
         this.showId = showId;
         this.seats = seats;
         this.userId = userId;

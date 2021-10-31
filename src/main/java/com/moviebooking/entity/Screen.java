@@ -9,18 +9,16 @@ import java.util.List;
 @Entity
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @Table(name="screen")
 public class Screen {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private Integer id;
     private String name;
 
-    @ElementCollection
-    @CollectionTable(name="seats", joinColumns=@JoinColumn(name="id"))
-    @Column(name="seats")
-    private List<Integer> seats;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "seat_ids", referencedColumnName = "id")
+    private List<Seat> seats;
 
     public Screen(@NonNull int id, @NonNull String name) {
         this.id = id;
@@ -28,8 +26,11 @@ public class Screen {
         this.seats = new ArrayList<>();
     }
 
-    public void addSeat(@NonNull int seatId) {
-        this.seats.add(seatId);
+    public List<Seat> getSeats() {
+        return seats;
     }
 
+    public void setSeats(List<Seat> seats) {
+        this.seats = seats;
+    }
 }

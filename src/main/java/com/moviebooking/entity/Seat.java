@@ -2,7 +2,6 @@ package com.moviebooking.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -16,7 +15,7 @@ public class Seat {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
-    private int rowNo;
+    private Integer id;
+    private String rowNo;
     private int seatNo;
 }
