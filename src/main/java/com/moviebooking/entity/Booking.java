@@ -16,7 +16,10 @@ public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    private int showId;
+
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "show_id", referencedColumnName = "id")
+    private Show show;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "booking_id")
@@ -24,22 +27,22 @@ public class Booking {
     private String userId;
     private BookingStatus bookingStatus;
 
-    public Booking(@NonNull int showId, @NonNull String userId,
+    public Booking(@NonNull Show show, @NonNull String userId,
                    @NonNull List<Seat> seats) {
-        this.showId = showId;
+        this.show = show;
         this.seats = seats;
         this.userId = userId;
         this.bookingStatus = BookingStatus.CREATED;
     }
 
-    public void isConfirmed() throws Exception {
+    public void confirmBooking() throws Exception {
         if (BookingStatus.CREATED != this.bookingStatus) {
             throw new Exception("Invalid State");
         }
         this.bookingStatus = BookingStatus.CONFIRMED;
     }
 
-    public void isExpired() throws Exception {
+    public void expiredBooking() throws Exception {
         if (BookingStatus.CREATED != this.bookingStatus) {
             throw new Exception("Invalid State");
         }
